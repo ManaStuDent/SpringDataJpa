@@ -22,7 +22,7 @@ public class AuthorService {
 	@Autowired
 	BookRepository bookRepository;
 
-//	@Autowired
+	//	@Autowired
 	BatchDao batchDao;
 
 	public void persistAuthor() {
@@ -40,7 +40,7 @@ public class AuthorService {
 		List<Author> authors = new ArrayList<>();
 
 		long pk = 0;
-		for (int i = 0; i < 40; i++) {
+		for (int i = 0; i < 2; i++) {
 
 			Author author = new Author();
 			author.setId((long) i + 1);
@@ -58,9 +58,25 @@ public class AuthorService {
 			}
 			authors.add(author);
 		}
-
-		batchDao.saveInBatch(authors);
+		authorRepository.saveAll(authors);
+//		batchDao.saveInBatch(authors);
 	}
+
+	/**
+	 * 删除维护的对象
+	 *
+	 * @OneToMany(cascade = CascadeType.ALL, mappedBy = "author", orphanRemoval = true)
+	 * orphanRemoval 如果为 false 则要手动删除，remove 是不会删除的
+	 */
+	@Transactional
+	public void removeOne() {
+		Optional<Author> author = authorRepository.findById(1L);
+		Author a = author.get();
+		List<Book> books = a.getBooks();
+		a.removeBook(books.get(0));
+		authorRepository.save(a);
+	}
+
 
 	public void findFirst2ByGenre() {
 		List<AuthorNameAge> author = authorRepository.findFirst2ByGenre("Genre_1");
@@ -95,7 +111,7 @@ public class AuthorService {
 
 		List<Author> authors = authorRepository.findAll();
 
-		for (Author author: authors) {
+		for (Author author : authors) {
 			List<Book> books = author.getBooks();
 			System.out.println("Author: " + author.getName() + " Books: " + books);
 		}

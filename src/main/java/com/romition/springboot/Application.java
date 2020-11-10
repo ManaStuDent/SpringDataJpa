@@ -19,11 +19,8 @@ public class Application {
 	@Bean
 	public ApplicationRunner init() {
 		return args -> {
-			System.out.println("\nFetch all books and authors  ...");
-			authorService.fetchBooksAndAuthors();
-
-			System.out.println("\nFetch all authors and books  ...");
-			authorService.fetchAuthorsAndBooks();
+			authorService.batchAuthorsAndBooks();
+			authorService.removeOne();
 		};
 	}
 }
