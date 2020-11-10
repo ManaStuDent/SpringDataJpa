@@ -19,8 +19,7 @@ public class Application {
 	@Bean
 	public ApplicationRunner init() {
 		return args -> {
-			authorService.batchAuthorsAndBooks();
-			authorService.removeOne();
+//			authorService.batchAuthorsAndBooks();
 		};
 	}
 }

@@ -8,13 +8,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Setter
 @Getter
+@Entity
+@Table(name = "author")
 public class Author implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private int age;
 	private String name;
 	private String genre;
@@ -32,4 +38,13 @@ public class Author implements Serializable {
 		this.books.remove(book);
 	}
 
+	@Override
+	public String toString() {
+		return "Author{" +
+				"id=" + id +
+				", age=" + age +
+				", name='" + name + '\'' +
+				", genre='" + genre + '\'' +
+				'}';
+	}
 }

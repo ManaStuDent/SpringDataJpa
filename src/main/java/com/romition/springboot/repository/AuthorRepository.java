@@ -3,12 +3,13 @@ package com.romition.springboot.repository;
 import com.romition.springboot.entity.Author;
 import com.romition.springboot.projection.AuthorNameAge;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface AuthorRepository extends JpaRepository<Author, Long> {
+public interface AuthorRepository extends JpaRepository<Author, Long>, JpaSpecificationExecutor<Author> {
 
 	Author findByName(String name);
 
