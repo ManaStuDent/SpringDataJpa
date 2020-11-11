@@ -3,13 +3,14 @@ package com.romition.springboot;
 import com.romition.springboot.entity.Author;
 import com.romition.springboot.entity.Book;
 import com.romition.springboot.repository.AuthorRepository;
+import com.romition.springboot.repository.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
@@ -21,6 +22,8 @@ public class JpaTest {
 
 	@Autowired
 	AuthorRepository authorRepository;
+	@Autowired
+	BookRepository bookRepository;
 
 	@Test
 	public void testFind() {
@@ -68,5 +71,14 @@ public class JpaTest {
 	public void findAllByPage() {
 		Page<Author> page = authorRepository.findAll(PageRequest.of(0, 10));
 		page.getContent().forEach(System.out::println);
+	}
+
+	@Test
+	@Transactional
+	@Rollback(false) // 添加不会滚，否则不会执行删除操作
+	public void testDelete() {
+		Author author = authorRepository.getOne(2L);
+		author.removeBook(author.getBooks().get(0));
+		authorRepository.save(author);
 	}
 }
